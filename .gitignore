@@ -1,0 +1,6 @@
+# Dev/QA artifacts
+.playwright-mcp/
+ss-*
+
+# OS
+.DS_Store

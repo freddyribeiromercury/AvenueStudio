@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Avenue Studio — Salão de beleza premium em Matosinhos. Cabeleireiro, Maquilhagem, Estética e Spa.">
+  <title>Avenue Studio — Matosinhos · Porto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --noir: #0B0908;
+      --charcoal: #1C1917;
+      --charcoal2: #262220;
+      --pearl: #A09993;
+      --rose-nude: #D4AFA9;
+      --rose-gold: #BF8E74;
+      --cream: #F5EFE8;
+      --warm-white: #FDFAF7;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--noir);
+      color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* NAV */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 1.75rem 0;
+      transition: background 0.5s, padding 0.5s, border-color 0.5s;
+      border-bottom: 1px solid transparent;
+    }
+    #nav.scrolled {
+      background: rgba(11,9,8,0.94);
+      backdrop-filter: blur(16px);
+      padding: 1rem 0;
+      border-bottom-color: rgba(191,142,116,0.12);
+    }
+    .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 2.5rem; display: flex; align-items: center; justify-content: space-between; }
+    .nav-link { font-size: 0.63rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.92); text-decoration: none; font-weight: 400; transition: color 0.3s; text-shadow: 0 1px 6px rgba(0,0,0,0.55); }
+    .nav-link:hover { color: var(--rose-gold); }
+    #nav.scrolled .nav-link { text-shadow: none; color: rgba(245,239,232,0.75); }
+    #nav.scrolled .nav-link:hover { color: var(--rose-gold); }
+    .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+    @media(max-width:768px){ .nav-links { display: none; } }
+
+    /* HERO */
+    #hero { height: 100vh; min-height: 680px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    #hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(170deg, rgba(11,9,8,0.72) 0%, rgba(11,9,8,0.5) 35%, rgba(11,9,8,0.78) 65%, rgba(11,9,8,0.97) 100%); }
+    .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 1.5rem; }
+    @keyframes fadeUp { from { opacity:0; transform: translateY(28px); } to { opacity:1; transform: translateY(0); } }
+    .a0 { animation: fadeUp 0.9s ease 0.05s both; }
+    .a1 { animation: fadeUp 0.9s ease 0.2s both; }
+    .a2 { animation: fadeUp 0.9s ease 0.45s both; }
+    .a3 { animation: fadeUp 0.9s ease 0.65s both; }
+    .a4 { animation: fadeUp 0.9s ease 0.85s both; }
+
+    /* SCROLL CUE */
+    .scroll-cue { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 3; }
+    .scroll-cue span { font-size: 0.55rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(160,153,147,0.55); }
+    .scroll-bar { width: 1px; height: 48px; background: rgba(160,153,147,0.12); position: relative; overflow: hidden; }
+    .scroll-bar::after { content:''; position:absolute; top:-100%; left:0; width:100%; height:100%; background:var(--rose-gold); animation: scrollDrop 2s ease-in-out infinite; }
+    @keyframes scrollDrop { 0%{top:-100%} 50%,100%{top:100%} }
+
+    /* REVEAL */
+    .reveal { opacity:0; transform: translateY(32px); transition: opacity 0.85s ease, transform 0.85s ease; }
+    .reveal.visible { opacity:1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; } .d2 { transition-delay: 0.2s; } .d3 { transition-delay: 0.3s; } .d4 { transition-delay: 0.4s; }
+
+    /* TYPOGRAPHY */
+    .display { font-family: 'Cormorant Garamond', serif; }
+    .label { font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--rose-gold); font-weight: 400; }
+    .gold-line { width: 48px; height: 1px; background: linear-gradient(90deg, transparent, var(--rose-gold), transparent); display: block; }
+    .gold-divider { height: 1px; background: linear-gradient(90deg, transparent 0%, rgba(191,142,116,0.3) 50%, transparent 100%); }
+
+    /* BUTTONS */
+    .btn-p {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.63rem; letter-spacing: 0.22em; text-transform: uppercase; font-family: 'DM Sans', sans-serif; font-weight: 500;
+      padding: 0.9rem 2.4rem; background: var(--rose-gold); color: var(--noir); text-decoration: none;
+      border-radius: 50px; position: relative; overflow: hidden; transition: background 0.3s; border: none; cursor: pointer;
+    }
+    .btn-p::after { content:''; position:absolute; top:0; left:-100%; width:60%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent); transition:left 0.5s; }
+    .btn-p:hover::after { left:150%; } .btn-p:hover { background: #cfa080; }
+    .btn-o {
+      display: inline-flex; align-items: center;
+      font-size: 0.63rem; letter-spacing: 0.22em; text-transform: uppercase; font-family: 'DM Sans', sans-serif; font-weight: 400;
+      padding: 0.9rem 2.4rem; border: 1px solid rgba(191,142,116,0.55); color: var(--rose-gold); text-decoration: none;
+      border-radius: 50px; transition: all 0.3s; background: transparent; cursor: pointer;
+    }
+    .btn-o:hover { background: rgba(191,142,116,0.08); border-color: var(--rose-gold); }
+
+    /* SERVICE CARD */
+    .svc-card { padding: 2.5rem 2rem; border: 1px solid rgba(160,153,147,0.1); background: var(--charcoal); position: relative; transition: border-color 0.4s, background 0.4s; }
+    .svc-card::before { content:''; position:absolute; top:-1px; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--rose-gold),transparent); opacity:0; transition:opacity 0.4s; }
+    .svc-card:hover { border-color: rgba(191,142,116,0.25); background: rgba(191,142,116,0.03); }
+    .svc-card:hover::before { opacity:1; }
+    .svc-icon { width:40px; height:40px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(191,142,116,0.25); margin-bottom:1.5rem; color:var(--rose-gold); }
+    .svc-item { font-size:0.8rem; color:var(--pearl); display:flex; align-items:center; gap:0.6rem; padding: 0.3rem 0; }
+    .svc-dot { color:var(--rose-gold); font-size:0.55rem; flex-shrink:0; }
+
+    /* GALLERY */
+    .tab-switcher { display:flex; background:rgba(160,153,147,0.06); border:1px solid rgba(191,142,116,0.15); border-radius:50px; padding:5px; gap:4px; width:fit-content; margin:0 auto; }
+    .tab-btn { font-size:0.58rem; letter-spacing:0.22em; text-transform:uppercase; font-family:'DM Sans',sans-serif; font-weight:500; padding:0.72rem 2.2rem; border:none; color:var(--pearl); background:transparent; cursor:pointer; border-radius:50px; transition:background 0.35s, color 0.35s; }
+    .tab-btn.active { background:var(--rose-gold); color:var(--noir); }
+    .tab-btn:not(.active):hover { background:rgba(191,142,116,0.1); color:var(--cream); }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:grid; }
+    .gallery-grid { grid-template-columns:repeat(3,1fr); gap:10px; }
+    @media(max-width:640px){ .gallery-grid { grid-template-columns:repeat(2,1fr); } }
+
+    /* SKELETON */
+    .g-skeleton { position:absolute; inset:0; z-index:1; background:linear-gradient(90deg, var(--charcoal2) 25%, rgba(160,153,147,0.07) 50%, var(--charcoal2) 75%); background-size:200% 100%; animation:shimmer 1.6s infinite; transition:opacity 0.5s; }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+    /* ITEM */
+    .g-item { position:relative; overflow:hidden; aspect-ratio:3/4; background:var(--charcoal2); cursor:pointer; transform-style:preserve-3d; will-change:transform; transition:box-shadow 0.5s; }
+    .g-item:hover { box-shadow:0 25px 70px rgba(0,0,0,0.65), 0 0 35px rgba(191,142,116,0.12); }
+    .g-item img { position:relative; z-index:2; width:100%; height:100%; object-fit:cover; display:block; opacity:0; transform:scale(1.06); transition:transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .g-item img.img-loaded { opacity:1; transition:opacity 0.6s ease, transform 0.85s cubic-bezier(0.25,0.46,0.45,0.94); }
+
+    /* HOVER OVERLAY */
+    .g-item .ov { position:absolute; inset:0; z-index:3; background:linear-gradient(to top, rgba(11,9,8,0.8) 0%, rgba(11,9,8,0.25) 45%, transparent 100%); opacity:0; transition:opacity 0.45s; }
+    .g-item:hover .ov { opacity:1; }
+
+    /* SHIMMER SWEEP */
+    .g-sweep { position:absolute; inset:0; z-index:4; background:linear-gradient(115deg, transparent 30%, rgba(191,142,116,0.18) 50%, transparent 70%); transform:translateX(-110%) skewX(-12deg); transition:transform 0.65s ease; pointer-events:none; }
+    .g-item:hover .g-sweep { transform:translateX(220%) skewX(-12deg); }
+
+    /* LABEL */
+    .g-label { position:absolute; bottom:0; left:0; right:0; padding:1.5rem 1.1rem 1.1rem; z-index:5; transform:translateY(6px); opacity:0; transition:transform 0.4s ease, opacity 0.4s ease; }
+    .g-item:hover .g-label { transform:translateY(0); opacity:1; }
+    .g-label-bar { width:18px; height:1px; background:var(--rose-gold); margin-bottom:0.45rem; }
+    .g-label-text { font-family:'DM Sans',sans-serif; font-size:0.56rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--cream); }
+
+    /* BRIDAL */
+    #noivas { background: linear-gradient(135deg,#130f0d 0%,#0b0908 45%,#110e0c 100%); position:relative; overflow:hidden; }
+    #noivas::before { content:''; position:absolute; top:-30%; right:-15%; width:55%; height:140%; background:radial-gradient(ellipse,rgba(191,142,116,0.07) 0%,transparent 70%); pointer-events:none; }
+    .b-pack { border:1px solid rgba(191,142,116,0.18); padding:2rem 1.75rem; background:rgba(11,9,8,0.5); transition:all 0.4s; }
+    .b-pack:hover { border-color:rgba(191,142,116,0.4); background:rgba(191,142,116,0.04); }
+
+    /* TESTIMONIALS */
+    .t-slide { display:none; }
+    .t-slide.active { display:block; animation: fadeIn 0.6s ease; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    .dot { width:6px; height:6px; background:rgba(160,153,147,0.3); border:none; cursor:pointer; transition:all 0.3s; }
+    .dot.active { width:24px; background:var(--rose-gold); }
+
+    /* HOURS */
+    .h-row { display:flex; justify-content:space-between; padding:0.6rem 0; border-bottom:1px solid rgba(160,153,147,0.08); font-size:0.82rem; font-weight:300; }
+    .h-row:last-child { border-bottom:none; }
+
+    /* SOCIAL */
+    .soc-btn { display:flex; align-items:center; gap:0.75rem; color:var(--pearl); text-decoration:none; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; transition:color 0.3s; }
+    .soc-btn:hover { color:var(--rose-gold); }
+    .soc-box { width:36px; height:36px; border:1px solid rgba(160,153,147,0.18); display:flex; align-items:center; justify-content:center; transition:border-color 0.3s, background 0.3s; flex-shrink:0; }
+    .soc-btn:hover .soc-box { border-color:rgba(191,142,116,0.4); background:rgba(191,142,116,0.06); }
+
+    /* MOBILE MENU */
+    #mmenu { position:fixed; inset:0; background:rgba(11,9,8,0.98); z-index:999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.5rem; transform:translateX(100%); transition:transform 0.45s cubic-bezier(0.77,0,0.175,1); }
+    #mmenu.open { transform:translateX(0); }
+    .m-link { font-family:'Cormorant Garamond',serif; font-size:2.6rem; font-weight:300; color:var(--cream); text-decoration:none; letter-spacing:0.03em; transition:color 0.3s; }
+    .m-link:hover { color:var(--rose-gold); }
+
+    /* RESPONSIVE GRIDS */
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+    @media(max-width:768px){ .two-col { grid-template-columns:1fr; gap:3rem; } }
+    .four-col { display:grid; grid-template-columns:repeat(4,1fr); }
+    @media(max-width:1024px){ .four-col { grid-template-columns:repeat(2,1fr); } }
+    @media(max-width:560px){ .four-col { grid-template-columns:1fr; } }
+    .three-col { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+    @media(max-width:900px){ .three-col { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#hero"><img src="logo%20preto.png" alt="Avenue Studio" style="height:60px;width:auto;display:block;"></a>
+    <div class="nav-links">
+      <a href="#sobre" class="nav-link">Sobre</a>
+      <a href="#servicos" class="nav-link">Serviços</a>
+      <a href="#portfolio" class="nav-link">Portfolio</a>
+      <a href="#noivas" class="nav-link">Noivas</a>
+      <a href="#contactos" class="nav-link">Contactos</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <a href="https://www.instagram.com/avenuestudio.pt/" target="_blank" class="btn-p" id="nav-cta" style="display:none;font-size:0.58rem;padding:0.7rem 1.5rem;">Agendar</a>
+      <button onclick="toggleMenu()" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:4px;" id="burger">
+        <span style="width:22px;height:1px;background:var(--cream);display:block;"></span>
+        <span style="width:22px;height:1px;background:var(--cream);display:block;"></span>
+        <span style="width:14px;height:1px;background:var(--cream);display:block;"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mmenu">
+  <button onclick="toggleMenu()" style="position:absolute;top:1.75rem;right:2rem;background:none;border:none;color:var(--pearl);font-size:0.75rem;cursor:pointer;letter-spacing:0.2em;text-transform:uppercase;font-family:'DM Sans',sans-serif;">fechar</button>
+  <a href="#sobre" class="m-link" onclick="toggleMenu()">Sobre</a>
+  <a href="#servicos" class="m-link" onclick="toggleMenu()">Serviços</a>
+  <a href="#portfolio" class="m-link" onclick="toggleMenu()">Portfolio</a>
+  <a href="#noivas" class="m-link" onclick="toggleMenu()">Noivas</a>
+  <a href="#contactos" class="m-link" onclick="toggleMenu()">Contactos</a>
+  <a href="https://www.instagram.com/avenuestudio.pt/" target="_blank" class="btn-p" onclick="toggleMenu()">Agendar Agora</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <video id="hero-bg" autoplay muted loop playsinline preload="auto">
+    <source src="Hero_Avenue.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <img src="logosemfundo.png" alt="Avenue Studio" class="a0" style="height:clamp(96px,15vw,168px);width:auto;margin:0 auto 1.5rem;display:block;">
+    <p class="a2" style="font-family:'Bodoni Moda',serif;font-size:clamp(2.2rem,4.9vw,3.9rem);font-weight:300;letter-spacing:0.01em;color:var(--warm-white);">
+      This is where the<br><em style="font-style:italic;color:var(--rose-nude);font-weight:300;">magic begins...</em>
+    </p>
+    <div class="a3" style="margin:2rem auto;display:flex;align-items:center;justify-content:center;gap:1.5rem;">
+      <div style="width:36px;height:1px;background:linear-gradient(90deg,transparent,var(--rose-gold));"></div>
+      <p style="font-size:0.67rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--pearl);">Cabeleireiro · Maquilhagem · Estética · Spa</p>
+      <div style="width:36px;height:1px;background:linear-gradient(270deg,transparent,var(--rose-gold));"></div>
+    </div>
+    <div class="a4" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="https://www.instagram.com/avenuestudio.pt/" target="_blank" class="btn-p">Agendar Agora</a>
+      <a href="#servicos" class="btn-o">Ver Serviços</a>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><div class="scroll-bar"></div></div>
+</section>
+
+<!-- STRIP -->
+<div style="background:var(--charcoal);padding:1.75rem 0;border-top:1px solid rgba(191,142,116,0.1);border-bottom:1px solid rgba(191,142,116,0.08);">
+  <div style="max-width:900px;margin:0 auto;padding:0 2rem;display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;align-items:center;">
+    <div style="text-align:center;"><p class="display" style="font-size:1.8rem;font-weight:300;color:var(--rose-gold);line-height:1;">4.9 ★</p><p style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--pearl);margin-top:4px;">Avaliação</p></div>
+    <div style="width:1px;height:36px;background:rgba(160,153,147,0.12);"></div>
+    <div style="text-align:center;"><p class="display" style="font-size:1.8rem;font-weight:300;color:var(--rose-gold);line-height:1;">2021</p><p style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--pearl);margin-top:4px;">Fundado</p></div>
+    <div style="width:1px;height:36px;background:rgba(160,153,147,0.12);"></div>
+    <div style="text-align:center;"><p class="display" style="font-size:1.8rem;font-weight:300;color:var(--rose-gold);line-height:1;">4</p><p style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--pearl);margin-top:4px;">Áreas de Serviço</p></div>
+    <div style="width:1px;height:36px;background:rgba(160,153,147,0.12);"></div>
+    <div style="text-align:center;"><p class="display" style="font-size:1.8rem;font-weight:300;color:var(--rose-gold);line-height:1;">Premium</p><p style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--pearl);margin-top:4px;">Experiência</p></div>
+  </div>
+</div>
+
+<!-- SOBRE -->
+<section id="sobre" style="padding:8rem 0;background:var(--noir);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem;">
+    <div class="two-col">
+      <div class="reveal" style="position:relative;">
+        <div style="overflow:hidden;">
+          <img src="Salao.jpg" alt="Interior Avenue Studio" style="width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center 20%;display:block;">
+          <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,rgba(11,9,8,0.45));pointer-events:none;"></div>
+        </div>
+        <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:var(--charcoal2);border:1px solid rgba(191,142,116,0.2);padding:1.6rem 1.75rem;backdrop-filter:blur(12px);">
+          <div style="color:var(--rose-gold);letter-spacing:0.1em;font-size:0.9rem;">★★★★★</div>
+          <p class="display" style="font-size:2.2rem;font-weight:300;color:var(--rose-gold);line-height:1.1;margin-top:0.3rem;">4.9<span style="font-size:0.9rem;color:var(--pearl);"> / 5</span></p>
+          <p style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--pearl);margin-top:0.3rem;">Avaliação média</p>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <p class="label" style="margin-bottom:1.5rem;">Sobre o Avenue Studio</p>
+        <h2 class="display" style="font-size:clamp(2.2rem,4vw,3.5rem);font-weight:300;line-height:1.2;color:var(--cream);margin-bottom:1.75rem;">
+          Um espaço de<br><em style="font-style:italic;color:var(--rose-nude);">excelência</em> e<br>bem-estar único
+        </h2>
+        <span class="gold-line" style="margin-bottom:2rem;"></span>
+        <p style="font-size:0.9rem;line-height:1.9;color:var(--pearl);margin-bottom:1.25rem;">O Avenue Studio é um salão de beleza premium no coração de Matosinhos. Desde 2021, proporciona uma experiência completa de cabeleireiro, maquilhagem, estética e spa — com atenção personalizada a cada cliente.</p>
+        <p style="font-size:0.9rem;line-height:1.9;color:var(--pearl);margin-bottom:2.5rem;">Descrito pelos clientes como <em style="font-style:italic;color:var(--cream);">"belíssimo, acolhedor e super diferenciado"</em>, cada detalhe foi pensado para oferecer o máximo de conforto. A nossa equipa, em constante formação, é reconhecida pelo seu profissionalismo ímpar.</p>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+          <a href="#servicos" class="btn-p">Nossos Serviços</a>
+          <a href="#contactos" class="btn-o">Contactar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos" style="padding:8rem 0;background:var(--charcoal);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem;">
+    <div class="reveal" style="text-align:center;margin-bottom:4.5rem;">
+      <p class="label" style="margin-bottom:1.25rem;">O Que Oferecemos</p>
+      <h2 class="display" style="font-size:clamp(2.4rem,5vw,4rem);font-weight:300;color:var(--cream);line-height:1.15;">Serviços de <em style="font-style:italic;color:var(--rose-nude);">excelência</em></h2>
+      <span class="gold-line" style="margin:1.5rem auto 0;"></span>
+    </div>
+    <div class="four-col" style="gap:1px;background:rgba(160,153,147,0.06);">
+
+      <!-- Cabeleireiro -->
+      <div class="svc-card reveal d1">
+        <div class="svc-icon">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10"/><path d="M12 8v8M8 12h8"/></svg>
+        </div>
+        <h3 class="display" style="font-size:1.45rem;font-weight:400;color:var(--cream);margin-bottom:0.5rem;">Cabeleireiro</h3>
+        <span class="gold-line" style="margin-bottom:1.25rem;"></span>
+        <div class="svc-item"><span class="svc-dot">◆</span>Corte de Cabelo</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Coloração Capilar</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Balayage & Highlights</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Tratamentos Capilares</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Cabelo Encaracolado</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Alisamentos</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Penteados & Apanhados</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Hidratação Profunda</div>
+      </div>
+
+      <!-- Maquilhagem -->
+      <div class="svc-card reveal d2">
+        <div class="svc-icon">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        </div>
+        <h3 class="display" style="font-size:1.45rem;font-weight:400;color:var(--cream);margin-bottom:0.5rem;">Maquilhagem</h3>
+        <span class="gold-line" style="margin-bottom:1.25rem;"></span>
+        <div class="svc-item"><span class="svc-dot">◆</span>Maquilhagem de Dia</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Maquilhagem de Noite</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Maquilhagem Noiva</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Maquilhagem Convidadas</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Make Up Artístico</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Retoque & Touch-up</div>
+      </div>
+
+      <!-- Estética -->
+      <div class="svc-card reveal d3">
+        <div class="svc-icon">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="display" style="font-size:1.45rem;font-weight:400;color:var(--cream);margin-bottom:0.5rem;">Estética & Spa</h3>
+        <span class="gold-line" style="margin-bottom:1.25rem;"></span>
+        <div class="svc-item"><span class="svc-dot">◆</span>Manicure & Pedicure</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Depilação Corporal</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Depilação a Laser</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Tratamentos de Rosto</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Tratamentos de Corpo</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Massagens</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Dia de SPA</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Programas de Beleza</div>
+      </div>
+
+      <!-- Noivas -->
+      <div class="svc-card reveal d4" style="background:linear-gradient(160deg,var(--charcoal) 0%,rgba(191,142,116,0.06) 100%);">
+        <div class="svc-icon" style="border-color:rgba(191,142,116,0.4);">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3 class="display" style="font-size:1.45rem;font-weight:400;color:var(--cream);margin-bottom:0.5rem;">Noivas</h3>
+        <span class="gold-line" style="margin-bottom:1.25rem;"></span>
+        <div class="svc-item"><span class="svc-dot">◆</span>Pack Cabelo + Maquilhagem</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Pack Completo Premium</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Pack Relaxamento SPA</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Pack Convidadas</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Serviço ao Domicílio</div>
+        <div class="svc-item"><span class="svc-dot">◆</span>Retoques fotografia</div>
+        <a href="#noivas" class="btn-o" style="margin-top:1.75rem;font-size:0.58rem;padding:0.65rem 1.4rem;">Saber Mais</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" style="padding:8rem 0;background:var(--noir);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem;">
+    <div class="reveal" style="text-align:center;margin-bottom:3.5rem;">
+      <p class="label" style="margin-bottom:1.25rem;">Nosso Trabalho</p>
+      <h2 class="display" style="font-size:clamp(2.4rem,5vw,4rem);font-weight:300;color:var(--cream);line-height:1.15;margin-bottom:1.25rem;"><em style="font-style:italic;color:var(--rose-nude);">Portfolio</em></h2>
+      <span class="gold-line" style="margin:0 auto 2.5rem;"></span>
+      <div class="tab-switcher">
+        <button class="tab-btn active" onclick="switchTab('cabelo')" id="tab-cabelo">Cabelo</button>
+        <button class="tab-btn" onclick="switchTab('maos')" id="tab-maos">Manicure &amp; Pedicure</button>
+      </div>
+    </div>
+
+    <div id="panel-cabelo" class="tab-panel active gallery-grid reveal">
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/469154697_18029805746578332_7483431387440510075_n.jpg" alt="Cabelo 1" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/469782003_878452907704989_1374549356560687451_n.jpg" alt="Cabelo 2" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/472788292_934951998728703_1703508462793223854_n.jpg" alt="Cabelo 3" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/472901749_935904831966753_4904765986123804376_n.jpg" alt="Cabelo 4" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/474871515_944956151061621_9081732842972095596_n.jpg" alt="Cabelo 5" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/475136580_947973014093268_591834369994617487_n.jpg" alt="Cabelo 6" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/475262127_948611517362751_6971078756044323639_n.jpg" alt="Cabelo 7" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/475280556_948621370695099_2288293036613933834_n.jpg" alt="Cabelo 8" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/475506401_948629667360936_5374170589392320908_n.jpg" alt="Cabelo 9" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/476207011_956436093246960_2877367340270457398_n.jpg" alt="Cabelo 10" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/476471102_956438349913401_312235072421837550_n.jpg" alt="Cabelo 11" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/583054132_18068684870578332_8648410185249990173_n.jpg" alt="Cabelo 12" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/624681173_18075839696578332_7075453373570417490_n.jpg" alt="Cabelo 13" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/639498776_18077897105578332_6879358382832210018_n.jpg" alt="Cabelo 14" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/645874350_18079523018578332_2587578314132688970_n.jpg" alt="Cabelo 15" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/651001866_18080486927578332_3532378893946044288_n.jpg" alt="Cabelo 16" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20cabelos/670799292_18084830957578332_5106724164416340833_n.jpg" alt="Cabelo 17" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+    </div>
+
+    <div id="panel-maos" class="tab-panel gallery-grid reveal">
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20maos/465558845_18026776526578332_2637887730753986519_n.jpg" alt="Manicure 1" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20maos/475438866_947886274101942_3548463693877697152_n.jpg" alt="Manicure 2" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20maos/476089786_18036558824578332_2054839060985199914_n.jpg" alt="Manicure 3" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20maos/480299089_961930426030860_4107355651077810696_n.jpg" alt="Manicure 4" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20maos/482811320_18040291367578332_5218456063488422606_n.jpg" alt="Manicure 5" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20maos/686997301_18087521897578332_951130351881325010_n.jpg" alt="Manicure 6" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20maos/688791949_1307026021521297_6409745896658465281_n.jpg" alt="Manicure 7" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+      <div class="g-item"><div class="g-skeleton"></div><img src="Portefolio%20maos/697163062_1313068484250384_2679212929616676940_n.jpg" alt="Manicure 8" loading="lazy"><div class="ov"></div><div class="g-sweep"></div><div class="g-label"><div class="g-label-bar"></div><span class="g-label-text">Avenue Studio</span></div></div>
+    </div>
+
+    <div class="reveal" style="text-align:center;margin-top:3rem;">
+      <a href="https://www.instagram.com/avenuestudio.pt/" target="_blank" class="soc-btn" style="justify-content:center;font-size:0.68rem;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        Ver mais em @avenuestudio.pt
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- NOIVAS -->
+<section id="noivas">
+  <div style="max-width:1200px;margin:0 auto;padding:8rem 2.5rem;">
+    <div class="two-col" style="align-items:start;">
+      <div class="reveal">
+        <p class="label" style="margin-bottom:1.5rem;">Para a Noiva Perfeita</p>
+        <h2 class="display" style="font-size:clamp(2.5rem,5vw,4rem);font-weight:300;line-height:1.15;color:var(--cream);margin-bottom:1.75rem;">
+          O seu dia<br><em style="font-style:italic;color:var(--rose-nude);">merece</em><br>o melhor
+        </h2>
+        <span class="gold-line" style="margin-bottom:2rem;"></span>
+        <p style="font-size:0.9rem;line-height:1.9;color:var(--pearl);margin-bottom:1.25rem;">O Avenue Studio acompanha-a em todos os momentos do seu grande dia. Com packs pensados para noivas e convidadas, garantimos que cada detalhe está perfeito — desde o cabelo à maquilhagem, manicure e spa.</p>
+        <p style="font-size:0.9rem;line-height:1.9;color:var(--pearl);margin-bottom:2rem;">A nossa equipa pode deslocar-se ao local escolhido, e permanece consigo até ao final da reportagem fotográfica para eventuais retoques.</p>
+        <div style="background:rgba(191,142,116,0.06);border:1px solid rgba(191,142,116,0.15);padding:1.2rem 1.5rem;margin-bottom:2.5rem;">
+          <p style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--rose-gold);margin-bottom:0.4rem;">Reserva Antecipada</p>
+          <p style="font-size:0.82rem;color:var(--pearl);line-height:1.7;">Recomendamos agendamento com <strong style="color:var(--cream);font-weight:400;">6 a 12 meses</strong> de antecedência, especialmente para noivas.</p>
+        </div>
+        <a href="https://www.instagram.com/avenuestudio.pt/" target="_blank" class="btn-p">Consultar Disponibilidade</a>
+      </div>
+
+      <div class="reveal d2" style="display:flex;flex-direction:column;gap:1px;background:rgba(191,142,116,0.08);">
+        <div class="b-pack">
+          <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:0.75rem;">
+            <h3 class="display" style="font-size:1.2rem;font-weight:400;color:var(--cream);">Pack Essencial</h3>
+            <span style="font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--rose-gold);border:1px solid rgba(191,142,116,0.3);padding:0.25rem 0.65rem;">Popular</span>
+          </div>
+          <p style="font-size:0.8rem;color:var(--pearl);line-height:1.7;">Cabeleireiro + Maquilhagem para a noiva no grande dia.</p>
+        </div>
+        <div class="b-pack">
+          <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:0.75rem;">
+            <h3 class="display" style="font-size:1.2rem;font-weight:400;color:var(--cream);">Pack Completo Premium</h3>
+            <span style="font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--rose-gold);border:1px solid rgba(191,142,116,0.3);padding:0.25rem 0.65rem;">Premium</span>
+          </div>
+          <p style="font-size:0.8rem;color:var(--pearl);line-height:1.7;">Cabelo + Maquilhagem + Manicure + Pedicure. Experiência completa.</p>
+        </div>
+        <div class="b-pack">
+          <h3 class="display" style="font-size:1.2rem;font-weight:400;color:var(--cream);margin-bottom:0.75rem;">Pack Relaxamento SPA</h3>
+          <p style="font-size:0.8rem;color:var(--pearl);line-height:1.7;">Tratamentos de rosto e corpo com momentos de spa. Para a noiva que quer sentir-se renovada.</p>
+        </div>
+        <div class="b-pack">
+          <h3 class="display" style="font-size:1.2rem;font-weight:400;color:var(--cream);margin-bottom:0.75rem;">Pack Convidadas</h3>
+          <p style="font-size:0.8rem;color:var(--pearl);line-height:1.7;">Serviço extensível a todas as convidadas da noiva. Cabelo e maquilhagem para toda a equipa.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testemunhos" style="padding:8rem 0;background:var(--charcoal);">
+  <div style="max-width:800px;margin:0 auto;padding:0 2.5rem;text-align:center;">
+    <div class="reveal">
+      <p class="label" style="margin-bottom:1.25rem;">O Que Dizem de Nós</p>
+      <h2 class="display" style="font-size:clamp(2rem,4vw,3rem);font-weight:300;color:var(--cream);margin-bottom:0.5rem;"><em style="font-style:italic;color:var(--rose-nude);">Avaliações</em></h2>
+      <div style="color:var(--rose-gold);letter-spacing:0.1em;font-size:1rem;margin:1rem 0 3rem;">★★★★★</div>
+    </div>
+    <div class="reveal" style="min-height:180px;">
+      <div class="t-slide active" id="t0">
+        <p class="display" style="font-size:clamp(1.35rem,3vw,1.85rem);font-weight:300;font-style:italic;line-height:1.55;color:var(--cream);margin-bottom:2rem;">"O meu salão de eleição! Serviços de excelência e ótimas profissionais de cabeleireiro, maquilhagem, manicure e estética. Recomendo."</p>
+        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rose-gold);">— Maria</p>
+      </div>
+      <div class="t-slide" id="t1">
+        <p class="display" style="font-size:clamp(1.35rem,3vw,1.85rem);font-weight:300;font-style:italic;line-height:1.55;color:var(--cream);margin-bottom:2rem;">"Espaço super encantador. Profissionais atenciosas que me ajudaram a encontrar o look que pretendia. Adorei!"</p>
+        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rose-gold);">— Catarina C.</p>
+      </div>
+      <div class="t-slide" id="t2">
+        <p class="display" style="font-size:clamp(1.35rem,3vw,1.85rem);font-weight:300;font-style:italic;line-height:1.55;color:var(--cream);margin-bottom:2rem;">"Recomendo o Avenue a todas as mulheres que querem e merecem mimar-se! Espaço belíssimo, acolhedor e super diferenciado! Profissionalismo ímpar!"</p>
+        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rose-gold);">— Raquel C.</p>
+      </div>
+      <div class="t-slide" id="t3">
+        <p class="display" style="font-size:clamp(1.35rem,3vw,1.85rem);font-weight:300;font-style:italic;line-height:1.55;color:var(--cream);margin-bottom:2rem;">"Espaço e atendimento incrível! Todos os serviços são espetaculares. Recomendo muito!"</p>
+        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rose-gold);">— Mariana V.</p>
+      </div>
+      <div class="t-slide" id="t4">
+        <p class="display" style="font-size:clamp(1.35rem,3vw,1.85rem);font-weight:300;font-style:italic;line-height:1.55;color:var(--cream);margin-bottom:2rem;">"Staff extremamente simpático e serviços prestados por profissionais muito competentes."</p>
+        <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rose-gold);">— Marta M.</p>
+      </div>
+    </div>
+    <div class="reveal" style="display:flex;justify-content:center;gap:0.6rem;margin-top:2.5rem;align-items:center;">
+      <button class="dot active" onclick="goT(0)" id="d0"></button>
+      <button class="dot" onclick="goT(1)" id="d1"></button>
+      <button class="dot" onclick="goT(2)" id="d2"></button>
+      <button class="dot" onclick="goT(3)" id="d3"></button>
+      <button class="dot" onclick="goT(4)" id="d4"></button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div style="background:var(--rose-gold);padding:3.5rem 2rem;text-align:center;">
+  <div style="max-width:660px;margin:0 auto;">
+    <h2 class="display" style="font-size:clamp(1.8rem,4vw,3rem);font-weight:300;color:var(--noir);margin-bottom:0.75rem;line-height:1.2;">Pronta para a sua transformação?</h2>
+    <p style="font-size:0.82rem;color:rgba(11,9,8,0.6);margin-bottom:1.75rem;letter-spacing:0.03em;">Agende a sua visita ao Avenue Studio em Matosinhos.</p>
+    <a href="https://www.instagram.com/avenuestudio.pt/" target="_blank" style="display:inline-flex;align-items:center;font-size:0.63rem;letter-spacing:0.22em;text-transform:uppercase;font-family:'DM Sans',sans-serif;font-weight:500;padding:0.9rem 2.4rem;background:var(--noir);color:var(--cream);text-decoration:none;border-radius:50px;transition:background 0.3s;">Agendar Agora</a>
+  </div>
+</div>
+
+<!-- CONTACTOS -->
+<section id="contactos" style="padding:8rem 0;background:var(--noir);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem;">
+    <div class="reveal" style="text-align:center;margin-bottom:4.5rem;">
+      <p class="label" style="margin-bottom:1.25rem;">Encontre-nos</p>
+      <h2 class="display" style="font-size:clamp(2.4rem,5vw,4rem);font-weight:300;color:var(--cream);line-height:1.15;"><em style="font-style:italic;color:var(--rose-nude);">Contactos</em></h2>
+      <span class="gold-line" style="margin:1.5rem auto 0;"></span>
+    </div>
+    <div class="two-col" style="align-items:start;">
+
+      <!-- Info -->
+      <div class="reveal">
+        <div style="margin-bottom:2.5rem;">
+          <p style="font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--rose-gold);margin-bottom:0.75rem;">Morada</p>
+          <p class="display" style="font-size:1.25rem;font-weight:300;color:var(--cream);line-height:1.6;">Avenida da República, 848<br>4450-240 Matosinhos</p>
+          <a href="https://maps.google.com/?q=Avenida+da+República+848+Matosinhos" target="_blank" style="display:inline-flex;align-items:center;gap:0.4rem;margin-top:0.75rem;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--rose-gold);text-decoration:none;border-bottom:1px solid rgba(191,142,116,0.3);padding-bottom:2px;">Ver no mapa →</a>
+        </div>
+        <div class="gold-divider" style="margin-bottom:2.5rem;"></div>
+        <div style="margin-bottom:2.5rem;">
+          <p style="font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--rose-gold);margin-bottom:1rem;">Horário</p>
+          <div class="h-row"><span style="color:var(--pearl);">Segunda-feira</span><span style="color:rgba(160,153,147,0.4);font-size:0.75rem;font-style:italic;">Encerrado</span></div>
+          <div class="h-row"><span style="color:var(--cream);">Terça-feira</span><span style="color:var(--cream);">09:30 – 19:00</span></div>
+          <div class="h-row"><span style="color:var(--cream);">Quarta-feira</span><span style="color:var(--cream);">09:30 – 19:00</span></div>
+          <div class="h-row"><span style="color:var(--cream);">Quinta-feira</span><span style="color:var(--cream);">09:30 – 19:00</span></div>
+          <div class="h-row"><span style="color:var(--cream);">Sexta-feira</span><span style="color:var(--cream);">09:30 – 19:00</span></div>
+          <div class="h-row"><span style="color:var(--cream);">Sábado</span><span style="color:var(--cream);">09:30 – 19:00</span></div>
+          <div class="h-row"><span style="color:var(--pearl);">Domingo</span><span style="color:rgba(160,153,147,0.4);font-size:0.75rem;font-style:italic;">Encerrado</span></div>
+        </div>
+        <div class="gold-divider" style="margin-bottom:2.5rem;"></div>
+        <div style="margin-bottom:2.5rem;">
+          <p style="font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--rose-gold);margin-bottom:0.75rem;">Pagamento</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+            <span style="font-size:0.68rem;letter-spacing:0.08em;color:var(--pearl);border:1px solid rgba(160,153,147,0.15);padding:0.28rem 0.7rem;">Numerário</span>
+            <span style="font-size:0.68rem;letter-spacing:0.08em;color:var(--pearl);border:1px solid rgba(160,153,147,0.15);padding:0.28rem 0.7rem;">MBWay</span>
+            <span style="font-size:0.68rem;letter-spacing:0.08em;color:var(--pearl);border:1px solid rgba(160,153,147,0.15);padding:0.28rem 0.7rem;">Transferência</span>
+            <span style="font-size:0.68rem;letter-spacing:0.08em;color:var(--pearl);border:1px solid rgba(160,153,147,0.15);padding:0.28rem 0.7rem;">Multibanco</span>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--rose-gold);margin-bottom:1rem;">Redes Sociais</p>
+          <div style="display:flex;flex-direction:column;gap:0.85rem;">
+            <a href="https://www.instagram.com/avenuestudio.pt/" target="_blank" class="soc-btn">
+              <div class="soc-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+              @avenuestudio.pt
+            </a>
+            <a href="https://www.facebook.com/avenuestudio.pt/" target="_blank" class="soc-btn">
+              <div class="soc-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+              Avenue Studio
+            </a>
+            <a href="https://www.tiktok.com/@avenuestudio.pt" target="_blank" class="soc-btn">
+              <div class="soc-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg></div>
+              @avenuestudio.pt
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map + Booking -->
+      <div class="reveal d2">
+        <div style="overflow:hidden;border:1px solid rgba(160,153,147,0.1);margin-bottom:2rem;">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3002.2343!2d-8.68297!3d41.18040!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sAvenida+da+Rep%C3%BAblica%2C+848%2C+Matosinhos!5e0!3m2!1spt!2spt!4v1234567890" width="100%" height="280" style="border:0;display:block;filter:grayscale(100%) invert(92%) contrast(88%);" allowfullscreen loading="lazy" title="Avenue Studio"></iframe>
+        </div>
+        <div style="background:var(--charcoal2);border:1px solid rgba(191,142,116,0.15);padding:2.25rem;">
+          <h3 class="display" style="font-size:1.6rem;font-weight:300;color:var(--cream);margin-bottom:0.5rem;">Faça a sua marcação</h3>
+          <p style="font-size:0.82rem;color:var(--pearl);margin-bottom:1.75rem;line-height:1.7;">Entre em contacto pelo Instagram ou visite-nos. Recomendamos agendamento prévio.</p>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+            <a href="https://www.instagram.com/avenuestudio.pt/" target="_blank" class="btn-p">Agendar via Instagram</a>
+            <a href="https://www.casamentos.pt/beleza-noivas/avenue-studio--e160597" target="_blank" class="btn-o">Casamentos.pt</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--charcoal2);padding:2.75rem 0;border-top:1px solid rgba(160,153,147,0.07);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem;">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:2rem;margin-bottom:2rem;">
+      <a href="#hero"><img src="logo%20preto.png" alt="Avenue Studio" style="height:52px;width:auto;opacity:0.8;display:block;"></a>
+      <div style="display:flex;gap:2rem;flex-wrap:wrap;">
+        <a href="#sobre" class="nav-link">Sobre</a>
+        <a href="#servicos" class="nav-link">Serviços</a>
+        <a href="#portfolio" class="nav-link">Portfolio</a>
+        <a href="#noivas" class="nav-link">Noivas</a>
+        <a href="#contactos" class="nav-link">Contactos</a>
+      </div>
+      <div style="display:flex;gap:0.75rem;">
+        <a href="https://www.instagram.com/avenuestudio.pt/" target="_blank" class="soc-btn" style="gap:0;"><div class="soc-box" style="width:32px;height:32px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div></a>
+        <a href="https://www.facebook.com/avenuestudio.pt/" target="_blank" class="soc-btn" style="gap:0;"><div class="soc-box" style="width:32px;height:32px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div></a>
+      </div>
+    </div>
+    <div class="gold-divider" style="margin-bottom:1.75rem;"></div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;">
+      <p style="font-size:0.68rem;color:rgba(160,153,147,0.45);letter-spacing:0.06em;">© 2025 Avenue Studio. Todos os direitos reservados.</p>
+      <p style="font-size:0.68rem;color:rgba(160,153,147,0.35);letter-spacing:0.04em;">Avenida da República, 848 · 4450-240 Matosinhos</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // NAV
+  const nav = document.getElementById('nav');
+  const navCta = document.getElementById('nav-cta');
+  window.addEventListener('scroll', () => {
+    const s = window.scrollY > 80;
+    nav.classList.toggle('scrolled', s);
+    if (navCta) navCta.style.display = s ? 'inline-flex' : 'none';
+  });
+
+  // MOBILE MENU
+  function toggleMenu() {
+    const m = document.getElementById('mmenu');
+    m.classList.toggle('open');
+    document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+  }
+
+  // REVEAL
+  const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // IMAGE LOAD REVEAL
+  function initGalleryItem(item) {
+    const img = item.querySelector('img');
+    const skeleton = item.querySelector('.g-skeleton');
+    function reveal() {
+      img.classList.add('img-loaded');
+      if (skeleton) { skeleton.style.opacity = '0'; setTimeout(() => skeleton.remove(), 600); }
+    }
+    if (img.complete && img.naturalWidth) { reveal(); }
+    else { img.addEventListener('load', reveal); }
+
+    // 3D TILT
+    item.addEventListener('mouseenter', () => {
+      item.style.transition = 'transform 0.08s linear, box-shadow 0.5s';
+    });
+    item.addEventListener('mousemove', e => {
+      const r = item.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      item.style.transform = `perspective(900px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale(1.03)`;
+    });
+    item.addEventListener('mouseleave', () => {
+      item.style.transition = 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.5s';
+      item.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) scale(1)';
+    });
+  }
+  document.querySelectorAll('.g-item').forEach(initGalleryItem);
+
+  // TABS
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => {
+      if (p.classList.contains('active')) p.classList.remove('active');
+    });
+    document.getElementById('tab-' + tab).classList.add('active');
+    const panel = document.getElementById('panel-' + tab);
+    panel.classList.add('active');
+    panel.querySelectorAll('.g-item').forEach((item, i) => {
+      item.style.transition = 'none';
+      item.style.opacity = '0';
+      item.style.transform = 'perspective(900px) translateY(22px)';
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          item.style.transition = `opacity 0.5s ease ${i * 55}ms, transform 0.5s ease ${i * 55}ms`;
+          item.style.opacity = '1';
+          item.style.transform = 'perspective(900px) translateY(0)';
+        }, 20);
+      });
+    });
+  }
+
+  // TESTIMONIALS
+  let cur = 0;
+  function goT(n) {
+    document.getElementById('t' + cur).classList.remove('active');
+    document.getElementById('d' + cur).classList.remove('active');
+    cur = n;
+    document.getElementById('t' + cur).classList.add('active');
+    document.getElementById('d' + cur).classList.add('active');
+  }
+  setInterval(() => goT((cur + 1) % 5), 5500);
+
+  // SMOOTH SCROLL
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+</body>
+</html>
